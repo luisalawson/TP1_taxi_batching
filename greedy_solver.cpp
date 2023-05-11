@@ -25,6 +25,7 @@ void GreedySolver::solve() {
     //solucion inicializar con -1 como valor arbitrario para indicar que no hay solucion todavia 
     //es de tipo TaxiAssignmentSolution
     TaxiAssignmentSolution solution(cantTaxis);
+    //Los taxis todavia no tienen pasajero ==> estan en -1
     for (int i = 0; i < cantTaxis; i++) {
         solution.assign(i, -1);
     }
