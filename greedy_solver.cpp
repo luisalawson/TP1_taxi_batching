@@ -21,24 +21,25 @@ void GreedySolver::setInstance(TaxiAssignmentInstance &instance) {
 
 void GreedySolver::solve() {
     //inicializo mis cantidades (como siempre son iguales van a tener el mismo valor)
-    int numTaxis, numPaxs = _instance.n;
+    int cantTaxis, cantPaxs = _instance.n;
     //solucion inicializar con -1 como valor arbitrario para indicar que no hay solucion todavia 
     //es de tipo TaxiAssignmentSolution
-    TaxiAssignmentSolution solution(numTaxis);
-    for (int i = 0; i < numTaxis; i++) {
+    TaxiAssignmentSolution solution(cantTaxis);
+    for (int i = 0; i < cantTaxis; i++) {
         solution.assign(i, -1);
     }
     // veo los pasajeros y agarro el primer taxi que vea 
-    for (int pax = 0; pax < numPaxs; pax++) {
+    for (int pax = 0; pax < cantPaxs; pax++) {
         //primera instancia: llega el pasajero pero no tiene auto
         bool asignado = false;
         //veo si los taxis estan vacios
-        for (int taxi = 0; taxi < numTaxis; taxi++) {
+        //*agregar* que sea el taxi que este mas cerca
+        for (int taxi = 0; taxi < cantTaxis; taxi++) {
             //si el taxi no tiene un pasajero, lo lleno
-            if (!solution.isTaxiAssigned(taxi)) {
+            int minTaxi = min(_instance.dist());
+            if (!solution.isTaxiAssigned(minTaxi)) {
                 solution.assign(taxi, pax);
                 asignado = true;
-                break;
             }
         }
         //si no encontre un taxi, aviso que el pasajero no tiene taxi
