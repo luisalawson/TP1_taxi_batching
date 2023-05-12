@@ -58,11 +58,9 @@ void GreedySolver::setInstance(TaxiAssignmentInstance &instance) {
 
 void GreedySolver::solve() {
     int cantTaxis, cantPaxs = _instance.n;
-    TaxiAssignmentSolution solution(cantTaxis);
 
-    for (int i = 0; i < cantTaxis; i++) {
-        solution.assign(i, -1);
-    }
+    //inicializa la solucion asignando -1 a las asignaciones de los taxis y pasajeros.
+    TaxiAssignmentSolution solution(cantTaxis);
 
     for (int pax = 0; pax < cantPaxs; pax++) {
         bool asignado = false;
@@ -82,20 +80,18 @@ void GreedySolver::solve() {
             }
         }
 
-        //si encontre un taxi, lo asigno
+        //si encontre un taxi, lo asigno. Si no, dejo el -1 asignado previamente.
         if (minTaxi != -1) {
             solution.assign(minTaxi, pax);
             asignado = true;
-        }
-
-        //si no encontre un taxi, asigno -1
-        if (!asignado) {
-            solution.assign(-1, pax);
         }
     }
 
     this->_solution = solution;
     this->_solution_status = 1;
+    
+    //falta guardar solution time
+
 }
 
 double GreedySolver::getObjectiveValue() const {

@@ -16,5 +16,6 @@ int main(int argc, char** argv) {
 
     solver.solve();
 
+    std::cout << solver.getSolutionStatus() << std::endl;
     return 0;
 }
