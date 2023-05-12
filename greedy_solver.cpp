@@ -1,4 +1,6 @@
 #include "greedy_solver.h"
+#include <limits>
+
 
 //Implementar la solución que se corresponde con la estrategia FCFS. 
 //Para ello, completar la clase GreedySolver, que toma una instancia y 
@@ -19,38 +21,77 @@ void GreedySolver::setInstance(TaxiAssignmentInstance &instance) {
     this->_instance = instance;
 }
 
+//Codigo anterior
+// void GreedySolver::solve() {
+//     //inicializo mis cantidades (como siempre son iguales van a tener el mismo valor)
+//     int cantTaxis, cantPaxs = _instance.n;
+//     //solucion inicializar con -1 como valor arbitrario para indicar que no hay solucion todavia 
+//     //es de tipo TaxiAssignmentSolution
+//     TaxiAssignmentSolution solution(cantTaxis);
+//     //Los taxis todavia no tienen pasajero ==> estan en -1
+//     for (int i = 0; i < cantTaxis; i++) {
+//         solution.assign(i, -1);
+//     }
+//     // veo los pasajeros y agarro el primer taxi que vea 
+//     for (int pax = 0; pax < cantPaxs; pax++) {
+//         //primera instancia: llega el pasajero pero no tiene auto
+//         bool asignado = false;
+//         //veo si los taxis estan vacios
+//         //*agregar* que sea el taxi que este mas cerca
+//         for (int taxi = 0; taxi < cantTaxis; taxi++) {
+//             //si el taxi no tiene un pasajero, lo lleno
+//             int minTaxi = min(_instance.dist());
+//             if (!solution.isTaxiAssigned(minTaxi)) {
+//                 solution.assign(taxi, pax);
+//                 asignado = true;
+//             }
+//         }
+//         //si no encontre un taxi, aviso que el pasajero no tiene taxi
+//         if (!asignado) {
+//             solution.assign(-1, pax);
+//         }
+//     }
+//     //objective value?
+//     _solution = solution;
+//     _solution_status = 1; 
+// }
+
 void GreedySolver::solve() {
-    //inicializo mis cantidades (como siempre son iguales van a tener el mismo valor)
     int cantTaxis, cantPaxs = _instance.n;
-    //solucion inicializar con -1 como valor arbitrario para indicar que no hay solucion todavia 
-    //es de tipo TaxiAssignmentSolution
     TaxiAssignmentSolution solution(cantTaxis);
-    //Los taxis todavia no tienen pasajero ==> estan en -1
+
     for (int i = 0; i < cantTaxis; i++) {
         solution.assign(i, -1);
     }
-    // veo los pasajeros y agarro el primer taxi que vea 
+
     for (int pax = 0; pax < cantPaxs; pax++) {
-        //primera instancia: llega el pasajero pero no tiene auto
         bool asignado = false;
-        //veo si los taxis estan vacios
-        //*agregar* que sea el taxi que este mas cerca
+        int minTaxi = -1; // Variable para almacenar el taxi más cercano
+        double minDist = std::numeric_limits<double>::max(); // Distancia mínima inicializada con el máximo valor posible
+
         for (int taxi = 0; taxi < cantTaxis; taxi++) {
-            //si el taxi no tiene un pasajero, lo lleno
-            int minTaxi = min(_instance.dist());
-            if (!solution.isTaxiAssigned(minTaxi)) {
-                solution.assign(taxi, pax);
-                asignado = true;
+            if (!solution.isTaxiAssigned(taxi)) {
+                // Calcula la distancia entre el taxi y el pasajero actual
+                double dist = _instance.dist(taxi, pax); //estamos llamando mal a dist, no se como arreglarlo
+                if (dist < minDist) {
+                    minDist = dist;
+                    minTaxi = taxi;
+                }
             }
         }
-        //si no encontre un taxi, aviso que el pasajero no tiene taxi
+
+        if (minTaxi != -1) {
+            solution.assign(minTaxi, pax);
+            asignado = true;
+        }
+
         if (!asignado) {
             solution.assign(-1, pax);
         }
     }
-    //objective value?
+
     _solution = solution;
-    _solution_status = 1; 
+    _solution_status = 1;
 }
 
 double GreedySolver::getObjectiveValue() const {
