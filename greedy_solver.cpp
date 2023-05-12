@@ -69,29 +69,33 @@ void GreedySolver::solve() {
         int minTaxi = -1; // Variable para almacenar el taxi más cercano
         double minDist = std::numeric_limits<double>::max(); // Distancia mínima inicializada con el máximo valor posible
 
+
+        //Recorro la matriz fijando el pasajero buscando el taxi mas cercano al mismo
         for (int taxi = 0; taxi < cantTaxis; taxi++) {
-            if (!solution.isTaxiAssigned(taxi)) {
-                // Calcula la distancia entre el taxi y el pasajero actual
-                double dist = _instance.dist(taxi, pax); //estamos llamando mal a dist, no se como arreglarlo
-                if (dist < minDist) {
-                    minDist = dist;
-                    minTaxi = taxi;
-                }
+
+            double dist = _instance.dist[taxi][pax];
+
+            //Si el taxi no esta asignado y tiene menor distancia que el minimo, actualizo minDist y minTaxi.
+            if (!solution.isTaxiAssigned(taxi) && dist < minDist) {
+                minDist = dist;
+                minTaxi = taxi;
             }
         }
 
+        //si encontre un taxi, lo asigno
         if (minTaxi != -1) {
             solution.assign(minTaxi, pax);
             asignado = true;
         }
 
+        //si no encontre un taxi, asigno -1
         if (!asignado) {
             solution.assign(-1, pax);
         }
     }
 
-    _solution = solution;
-    _solution_status = 1;
+    this->_solution = solution;
+    this->_solution_status = 1;
 }
 
 double GreedySolver::getObjectiveValue() const {
