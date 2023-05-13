@@ -5,7 +5,7 @@
 
 
 int main(int argc, char** argv) {
-    std::string filename = "input/small_1.csv";
+    std::string filename = "input/xl_0.csv";
 
     TaxiAssignmentInstance instance(filename);
     std::cout << filename << std::endl;

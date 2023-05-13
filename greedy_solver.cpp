@@ -2,6 +2,7 @@
 #include <limits>
 using namespace std;
 #include <ctime>
+#include <chrono>
 
 //Implementar la solución que se corresponde con la estrategia FCFS. 
 //Para ello, completar la clase GreedySolver, que toma una instancia y 
@@ -22,45 +23,10 @@ void GreedySolver::setInstance(TaxiAssignmentInstance &instance) {
     this->_instance = instance;
 }
 
-//Codigo anterior
-// void GreedySolver::solve() {
-//     //inicializo mis cantidades (como siempre son iguales van a tener el mismo valor)
-//     int cantTaxis, cantPaxs = _instance.n;
-//     //solucion inicializar con -1 como valor arbitrario para indicar que no hay solucion todavia 
-//     //es de tipo TaxiAssignmentSolution
-//     TaxiAssignmentSolution solution(cantTaxis);
-//     //Los taxis todavia no tienen pasajero ==> estan en -1
-//     for (int i = 0; i < cantTaxis; i++) {
-//         solution.assign(i, -1);
-//     }
-//     // veo los pasajeros y agarro el primer taxi que vea 
-//     for (int pax = 0; pax < cantPaxs; pax++) {
-//         //primera instancia: llega el pasajero pero no tiene auto
-//         bool asignado = false;
-//         //veo si los taxis estan vacios
-//         //*agregar* que sea el taxi que este mas cerca
-//         for (int taxi = 0; taxi < cantTaxis; taxi++) {
-//             //si el taxi no tiene un pasajero, lo lleno
-//             int minTaxi = min(_instance.dist());
-//             if (!solution.isTaxiAssigned(minTaxi)) {
-//                 solution.assign(taxi, pax);
-//                 asignado = true;
-//             }
-//         }
-//         //si no encontre un taxi, aviso que el pasajero no tiene taxi
-//         if (!asignado) {
-//             solution.assign(-1, pax);
-//         }
-//     }
-//     //objective value?
-//     _solution = solution;
-//     _solution_status = 1; 
-// }
-
 void GreedySolver::solve() {
 
     //guardo tiempo inicial
-    double t0 = time(0);
+    auto start_time = std::chrono::high_resolution_clock::now();
  
     int cantTaxis = _instance.n;
     int cantPaxs = _instance.n;
@@ -97,11 +63,12 @@ void GreedySolver::solve() {
     this->_solution = solution;
     this->_solution_status = 1;
 
-    //defino tiempo final y calculo el tiempo de ejecucion
-    double t1 = time(0);
-    double time = t1-t0;
+    //defino tiempo final y calculo el tiempo de ejecucion en milisegundos
+    auto end_time = std::chrono::high_resolution_clock::now();
+    double time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+    cout << "Tiempo de ejecucion: " << time << " ms" << endl;
 
-    //guardo el tiempo de ejecucion
+    //guardo el tiempo de ejecucion (milisegundos)
     this->_solution_time = time;
 }
 
