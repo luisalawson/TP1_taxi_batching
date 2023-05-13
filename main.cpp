@@ -16,6 +16,12 @@ int main(int argc, char** argv) {
 
     solver.solve();
 
-    std::cout << solver.getSolutionStatus() << std::endl;
+    TaxiAssignmentSolution solucion = solver.getSolution();
+    
+    //devuelve las asignaciones de los taxis
+    for (int i = 0; i < instance.n; i++) {
+        std::cout <<"El taxi " << i <<  " fue asignado al pasajero " << solucion.getAssignedPax(i) << std::endl;
+    };
+
     return 0;
 }

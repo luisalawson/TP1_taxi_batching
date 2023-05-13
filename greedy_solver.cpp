@@ -1,6 +1,6 @@
 #include "greedy_solver.h"
 #include <limits>
-
+using namespace std;
 
 //Implementar la solución que se corresponde con la estrategia FCFS. 
 //Para ello, completar la clase GreedySolver, que toma una instancia y 
@@ -57,7 +57,8 @@ void GreedySolver::setInstance(TaxiAssignmentInstance &instance) {
 // }
 
 void GreedySolver::solve() {
-    int cantTaxis, cantPaxs = _instance.n;
+    int cantTaxis = _instance.n;
+    int cantPaxs = _instance.n;
 
     //inicializa la solucion asignando -1 a las asignaciones de los taxis y pasajeros.
     TaxiAssignmentSolution solution(cantTaxis);
