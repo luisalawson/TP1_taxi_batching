@@ -23,5 +23,9 @@ int main(int argc, char** argv) {
         std::cout <<"El taxi " << i <<  " fue asignado al pasajero " << solucion.getAssignedPax(i) << std::endl;
     };
 
+    std::cout << "El estado de la solucion es: " << solver.getSolutionStatus() << std::endl;
+
+    std::cout << "El tiempo de ejecucion es: " << solver.getSolutionTime() << std::endl;
+
     return 0;
 }

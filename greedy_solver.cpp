@@ -1,6 +1,7 @@
 #include "greedy_solver.h"
 #include <limits>
 using namespace std;
+#include <ctime>
 
 //Implementar la solución que se corresponde con la estrategia FCFS. 
 //Para ello, completar la clase GreedySolver, que toma una instancia y 
@@ -57,6 +58,10 @@ void GreedySolver::setInstance(TaxiAssignmentInstance &instance) {
 // }
 
 void GreedySolver::solve() {
+
+    //guardo tiempo inicial
+    double t0 = time(0);
+ 
     int cantTaxis = _instance.n;
     int cantPaxs = _instance.n;
 
@@ -88,11 +93,16 @@ void GreedySolver::solve() {
         }
     }
 
+    //guardo la solucion y cambio el status
     this->_solution = solution;
     this->_solution_status = 1;
-    
-    //falta guardar solution time
 
+    //defino tiempo final y calculo el tiempo de ejecucion
+    double t1 = time(0);
+    double time = t1-t0;
+
+    //guardo el tiempo de ejecucion
+    this->_solution_time = time;
 }
 
 double GreedySolver::getObjectiveValue() const {
