@@ -27,7 +27,6 @@ void GreedySolver::solve() {
 
     //guardo tiempo inicial
     auto start_time = std::chrono::high_resolution_clock::now();
- 
     int cantTaxis = _instance.n;
     int cantPaxs = _instance.n;
 
@@ -38,25 +37,21 @@ void GreedySolver::solve() {
         bool asignado = false;
         int minTaxi = -1; // Variable para almacenar el taxi más cercano
         double minDist = std::numeric_limits<double>::max(); // Distancia mínima inicializada con el máximo valor posible
-
-
         //Recorro la matriz fijando el pasajero buscando el taxi mas cercano al mismo
         for (int taxi = 0; taxi < cantTaxis; taxi++) {
-
             double dist = _instance.dist[taxi][pax];
-
             //Si el taxi no esta asignado y tiene menor distancia que el minimo, actualizo minDist y minTaxi.
             if (!solution.isTaxiAssigned(taxi) && dist < minDist) {
                 minDist = dist;
                 minTaxi = taxi;
             }
         }
-
         //si encontre un taxi, lo asigno. Si no, dejo el -1 asignado previamente.
         if (minTaxi != -1) {
             solution.assign(minTaxi, pax);
             asignado = true;
         }
+        this->_objective_value = this->_objective_value + minDist;
     }
 
     //guardo la solucion y cambio el status
@@ -67,7 +62,7 @@ void GreedySolver::solve() {
     auto end_time = std::chrono::high_resolution_clock::now();
     double time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
     cout << "Tiempo de ejecucion: " << time << " ms" << endl;
-
+    cout << "Kilometros recorridos: " << this->_objective_value << "km "<< endl;
     //guardo el tiempo de ejecucion (milisegundos)
     this->_solution_time = time;
 }
